@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from 'expo-status-bar';
 
@@ -23,69 +23,82 @@ const tasks = [
   { id: "9", title: "Limit screen time before bed" },
   { id: "10", title: "Limit screen" },
   { id: "11", title: "Take Nastya" },
+  { id: "12", title: "Take Nastya" },
 ];
 
 export default function Index() {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <StatusBar style="dark" />
-      <ScrollView
-        showsVerticalScrollIndicator={false}>
-        {/* Header Title */}
-        <View style={styles.container}>
-          <View>
-            <Text style={styles.currentDay}>Today</Text>
+        <ScrollView
+          showsVerticalScrollIndicator={false}>
+          {/* Header Title */}
+          <View style={styles.container}>
+            <View>
+              <Text style={styles.currentDay}>Today</Text>
+            </View>
+            {/* Calendar Lists */}
+            <View style={styles.calendarBlock}>
+              <FlatList
+                data={days}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.calendarList}
+                keyExtractor={(item) => item.date.toString()}
+                renderItem={({ item }) => {
+                  return (
+                    <TouchableOpacity
+                      style={styles.calendarItem}
+                    >
+                      <Text style={styles.calendarItemDay}>
+                        {item.day}
+                      </Text>
+                      <Text style={styles.calendarItemDate}>
+                        {item.date}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            </View>
+            {/* Task Lists */}
+            <View>
+              <FlatList
+                data={tasks}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={styles.taskList}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => {
+                  return (
+                    <TouchableOpacity style={styles.taskItem}>
+                      <Text style={styles.taskItemTitle}>{item.title}</Text>
+                    </TouchableOpacity>
+                  ); 
+                }}
+              />
+            </View>
           </View>
-          {/* Calendar Lists */}
-          <View style={styles.calendarBlock}>
-            <FlatList
-              data={days}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={styles.calendarList}
-              keyExtractor={(item) => item.date.toString()}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity
-                    style={styles.calendarItem}
-                  >
-                    <Text style={styles.calendarItemDay}>
-                      {item.day}
-                    </Text>
-                    <Text style={styles.calendarItemDate}>
-                      {item.date}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
-          {/* Task Lists */}
-          <View style={styles.taskBlock}>
-            <FlatList
-              data={tasks}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={styles.taskList}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity style={styles.taskItem}>
-                    <Text style={styles.taskItemTitle}>{item.title}</Text>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      {/* Bottom Action Write and Add Task */}
+      <View style={styles.addTask}>
+        <TextInput
+          placeholder="Write a task..."
+          placeholderTextColor={"#222222"}
+          style={styles.addTaskInput}
+        />
+        <TouchableOpacity style={styles.addTaskBtn}>
+          <Text style={styles.addTaskBtnText}>Add</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView >
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 32,
-    paddingHorizontal: 22
+    paddingTop: 32,
+    paddingBottom: 16,
+    paddingHorizontal: 22,
   },
   currentDay: {
     color: "#000000",
@@ -121,9 +134,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#12121280"
   },
-  taskBlock: {
-
-  },
   taskList: {
     gap: 16,
   },
@@ -134,6 +144,39 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   taskItemTitle: {
-
+    color: "#121212",
+    fontSize: 17,
+    fontWeight: 500,
+  },
+  addTask: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    paddingBottom: 16,
+    paddingHorizontal: 22,
+  },
+  addTaskInput: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: 21,
+    height: 56,
+    borderRadius: 12,
+    backgroundColor: "#F3EFEE",
+    fontSize: 18,
+    fontWeight: "500",
+    color: "#121212"
+  },
+  addTaskBtn: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 77,
+    height: 56,
+    borderRadius: 12,
+    backgroundColor: "#393433",
+  },
+  addTaskBtnText: {
+    color: "#FFFFFF",
+    fontSize: 18,
+    fontWeight: 500,
   },
 });
