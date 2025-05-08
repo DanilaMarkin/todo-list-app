@@ -1,6 +1,9 @@
-import { FlatList, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from 'expo-status-bar';
+import { useEffect, useState } from "react";
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const days = [
   { day: 'WED', date: 25 },
@@ -11,82 +14,118 @@ const days = [
   { day: 'MON', date: 30 },
 ];
 
-const tasks = [
-  { id: "1", title: "Drink 8 glasses of water" },
-  { id: "2", title: "Meditate for 10 minutes" },
-  { id: "3", title: "Read a chapter of a book" },
-  { id: "4", title: "Go for a 30-minute walk" },
-  { id: "5", title: "Write in a gratitude journal" },
-  { id: "6", title: "Plan meals for the day" },
-  { id: "7", title: "Practice deep breathing exercises" },
-  { id: "8", title: "Stretch for 15 minutes" },
-  { id: "9", title: "Limit screen time before bed" },
-  { id: "10", title: "Limit screen" },
-  { id: "11", title: "Take Nastya" },
-  { id: "12", title: "Take Nastya" },
-];
+interface Task {
+  id: string;
+  title: string;
+}
 
 export default function Index() {
+  const [inputValue, setInputValue] = useState("");
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  // Проверка при загрузке на наличие задач
+  useEffect(() => {
+    loadTasks();
+  }, []);
+
+  // Функция для первоначальной загрузки данных
+  const loadTasks = async () => {
+    const saved = await AsyncStorage.getItem("tasks");
+
+    if (saved) {
+      setTasks(JSON.parse(saved));
+    }
+  };
+
+  // Функция для сохранения задач в локальное хранилище
+  const saveTasks = async (newTasks: Task[]) => {
+    await AsyncStorage.setItem("tasks", JSON.stringify(newTasks));
+  };
+
+  // Функия добавление в список задач
+  const addTask = async () => {
+    const newTask: Task = {
+      id: Date.now().toString(),
+      title: inputValue.trim()
+    };
+
+    const updatedTasks = [newTask, ...tasks];
+    setTasks(updatedTasks);
+    await saveTasks(updatedTasks);
+
+    setInputValue("");
+    Keyboard.dismiss();
+
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar style="dark" />
-        <ScrollView
-          showsVerticalScrollIndicator={false}>
-          {/* Header Title */}
-          <View style={styles.container}>
-            <View>
-              <Text style={styles.currentDay}>Today</Text>
-            </View>
-            {/* Calendar Lists */}
-            <View style={styles.calendarBlock}>
-              <FlatList
-                data={days}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.calendarList}
-                keyExtractor={(item) => item.date.toString()}
-                renderItem={({ item }) => {
-                  return (
-                    <TouchableOpacity
-                      style={styles.calendarItem}
-                    >
-                      <Text style={styles.calendarItemDay}>
-                        {item.day}
-                      </Text>
-                      <Text style={styles.calendarItemDate}>
-                        {item.date}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                }}
-              />
-            </View>
-            {/* Task Lists */}
-            <View>
-              <FlatList
-                data={tasks}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={styles.taskList}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => {
-                  return (
-                    <TouchableOpacity style={styles.taskItem}>
-                      <Text style={styles.taskItemTitle}>{item.title}</Text>
-                    </TouchableOpacity>
-                  ); 
-                }}
-              />
-            </View>
+      <ScrollView
+        showsVerticalScrollIndicator={false}>
+        {/* Header Title */}
+        <View style={styles.container}>
+          <View>
+            <Text style={styles.currentDay}>My Tasks</Text>
           </View>
-        </ScrollView>
+          {/* Calendar Lists */}
+          <View style={styles.calendarBlock}>
+            <FlatList
+              data={days}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.calendarList}
+              keyExtractor={(item) => item.date.toString()}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity
+                    style={styles.calendarItem}
+                  >
+                    <Text style={styles.calendarItemDay}>
+                      {item.day}
+                    </Text>
+                    <Text style={styles.calendarItemDate}>
+                      {item.date}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+          {/* Task Lists */}
+          <View>
+            <FlatList
+              data={tasks}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.taskList}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity style={styles.taskItem}>
+                    <Text style={styles.taskItemTitle}>{item.title}</Text>
+                    <MaterialIcons name="delete" size={24} color="#555555" />
+                  </TouchableOpacity>
+                );
+              }}
+              ListEmptyComponent={
+                <Text>Нет задач</Text>
+              }
+            />
+          </View>
+        </View>
+      </ScrollView>
       {/* Bottom Action Write and Add Task */}
       <View style={styles.addTask}>
         <TextInput
+          value={inputValue}
+          onChangeText={(text) => setInputValue(text)}
           placeholder="Write a task..."
           placeholderTextColor={"#222222"}
           style={styles.addTaskInput}
         />
-        <TouchableOpacity style={styles.addTaskBtn}>
+        <TouchableOpacity
+          onPress={addTask}
+          style={styles.addTaskBtn}>
           <Text style={styles.addTaskBtnText}>Add</Text>
         </TouchableOpacity>
       </View>
@@ -138,6 +177,9 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   taskItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     borderRadius: 12,
     backgroundColor: "#F3EFEE",
     paddingHorizontal: 16,
