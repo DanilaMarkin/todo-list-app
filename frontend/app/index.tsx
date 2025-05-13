@@ -73,7 +73,18 @@ export default function Index() {
 
   // Функция для отметки задачи как выполненной
   const handleTaskCompletion = async (id: string) => {
+    const localTasks = await AsyncStorage.getItem("tasks");
+    const parsedTasks = localTasks ? JSON.parse(localTasks) : [];
 
+    const updatedTasks = parsedTasks.map((task: Task) => {
+      if (task.id === id) {
+        return { ...task, isCompleted: !task.isCompleted };
+      }
+      return task;
+    });
+
+    setTasks(updatedTasks);
+    await saveTasks(updatedTasks);
   }
 
   return (
@@ -113,6 +124,8 @@ export default function Index() {
             }
           />
         </View>
+
+
 
         {/* Bottom Action Write and Add Task */}
         <View style={styles.addTask}>
