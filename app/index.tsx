@@ -5,16 +5,6 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from "react";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
-
-const days = [
-  { day: 'WED', date: 25 },
-  { day: 'THU', date: 26 },
-  { day: 'FRI', date: 27 },
-  { day: 'SAT', date: 28 },
-  { day: 'SUN', date: 29 },
-  { day: 'MON', date: 30 },
-];
-
 interface Task {
   id: string
   title: string
@@ -97,8 +87,9 @@ export default function Index() {
           <Text style={styles.currentDay}>My Tasks</Text>
         </View>
 
-        {/* Task Lists */}
+        {/* Task Lists Blocks */}
         <View style={{ flex: 1, paddingBottom: 56 + 16 }}>
+          {/* Task List(isCompleted = false) */}
           <FlatList
             data={tasks}
             showsVerticalScrollIndicator={false}
@@ -124,8 +115,6 @@ export default function Index() {
             }
           />
         </View>
-
-
 
         {/* Bottom Action Write and Add Task */}
         <View style={styles.addTask}>
