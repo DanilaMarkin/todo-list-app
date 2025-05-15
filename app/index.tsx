@@ -1,4 +1,4 @@
-import { FlatList, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from 'expo-status-bar';
@@ -13,6 +13,7 @@ interface Task {
 
 export default function Index() {
   const [inputValue, setInputValue] = useState("");
+  const [inputValueError, setInputValueError] = useState(false);
   const [tasks, setTasks] = useState<Task[]>([]);
 
   // Проверка при загрузке на наличие задач
@@ -42,11 +43,17 @@ export default function Index() {
       isCompleted: false,
     };
 
+    if (inputValue.trim() === "") {
+      setInputValueError(true);
+      return;
+    }
+
     const updatedTasks = [newTask, ...tasks];
     setTasks(updatedTasks);
     await saveTasks(updatedTasks);
 
     setInputValue("");
+    setInputValueError(false);
     Keyboard.dismiss();
   };
 
@@ -88,10 +95,14 @@ export default function Index() {
         </View>
 
         {/* Task Lists Blocks */}
-        <View style={{ flex: 1, paddingBottom: 56 + 16 }}>
+        <ScrollView
+          contentContainerStyle={styles.taskList}
+          showsVerticalScrollIndicator={false}
+        >
           {/* Task List(isCompleted = false) */}
           <FlatList
-            data={tasks}
+            data={tasks.filter((task) => !task.isCompleted)}
+            scrollEnabled={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.taskList}
             keyExtractor={(item) => item.id}
@@ -114,16 +125,50 @@ export default function Index() {
               <Text>No Tasks</Text>
             }
           />
-        </View>
+          {/* Task List(isCompleted = true) */}
+          {tasks.some(task => task.isCompleted) && (
+            <Text style={styles.textCompleted}>COMPLETED</Text>
+          )}
+          <FlatList
+            data={tasks.filter((task) => task.isCompleted)}
+            scrollEnabled={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.taskListIsCompleted}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => {
+              return (
+                <View style={[styles.taskItem, styles.completedTask]}>
+                  <View style={styles.taskItemLeft}>
+                    <TouchableOpacity onPress={() => handleTaskCompletion(item.id)}>
+                      <MaterialIcons name={item.isCompleted ? "check-box" : "check-box-outline-blank"} size={24} color="#555555" />
+                    </TouchableOpacity>
+                    <Text style={styles.taskItemTitle}>{item.title}</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => deleteTask(item.id)}>
+                    <MaterialIcons name="delete" size={24} color="#555555" />
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+          />
+        </ScrollView>
 
         {/* Bottom Action Write and Add Task */}
         <View style={styles.addTask}>
           <TextInput
             value={inputValue}
-            onChangeText={(text) => setInputValue(text)}
+            onChangeText={(text) => {
+              setInputValue(text)
+              if (text.trim() !== "") {
+                setInputValueError(false);
+              }
+            }}
             placeholder="Write a task..."
-            placeholderTextColor={"#222222"}
-            style={styles.addTaskInput}
+            placeholderTextColor={"222222"}
+            style={[
+              styles.addTaskInput,
+              inputValueError && styles.inputError
+            ]}
           />
           <TouchableOpacity
             onPress={addTask}
@@ -150,7 +195,7 @@ const styles = StyleSheet.create({
     fontWeight: 700
   },
   taskList: {
-    paddingVertical: 32,
+    paddingTop: 32,
     gap: 16,
   },
   taskItem: {
@@ -175,6 +220,22 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 500,
   },
+  taskListIsCompleted: {
+    gap: 16,
+  },
+  textCompleted: {
+    fontSize: 12,
+    fontWeight: 600,
+    letterSpacing: 1,
+    color: "#D1A28B"
+  },
+  completedTask: {
+    opacity: 0.5,
+    backgroundColor: "#F7F7F7",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "rgba(0, 0, 0, 0.1)"
+  },
   addTask: {
     position: "absolute",
     left: 0,
@@ -193,6 +254,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
     color: "#121212"
+  },
+  inputError: {
+    borderWidth: 1,
+    borderColor: "#FF0000",
+    backgroundColor: "#FFE0E0",
   },
   addTaskBtn: {
     justifyContent: "center",

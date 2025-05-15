@@ -1,17 +1,12 @@
 {
   "expo": {
-    "name": "todo-list-app",
+    "name": "To-Do",
     "slug": "todo-list-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "todolistapp",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
