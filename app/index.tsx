@@ -1,4 +1,4 @@
-import { FlatList, Keyboard, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from 'expo-status-bar';
@@ -164,7 +164,7 @@ export default function Index() {
               }
             }}
             placeholder="Write a task..."
-            placeholderTextColor={"222222"}
+            placeholderTextColor={"#222222"}
             style={[
               styles.addTaskInput,
               inputValueError && styles.inputError
