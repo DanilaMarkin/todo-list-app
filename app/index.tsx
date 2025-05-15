@@ -96,7 +96,7 @@ export default function Index() {
 
         {/* Task Lists Blocks */}
         <ScrollView
-          contentContainerStyle={styles.taskList}
+          contentContainerStyle={styles.taskListBlocks}
           showsVerticalScrollIndicator={false}
         >
           {/* Task List(isCompleted = false) */}
@@ -194,8 +194,11 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: 700
   },
-  taskList: {
+  taskListBlocks: {
     paddingTop: 32,
+    paddingBottom: 56 + 16,
+  },
+  taskList: {
     gap: 16,
   },
   taskItem: {
@@ -224,6 +227,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   textCompleted: {
+    paddingVertical: 16,
     fontSize: 12,
     fontWeight: 600,
     letterSpacing: 1,
