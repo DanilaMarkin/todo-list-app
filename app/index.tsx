@@ -1,4 +1,4 @@
-import { FlatList, Keyboard, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from 'expo-status-bar';
@@ -88,96 +88,96 @@ export default function Index() {
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
       {/* Header Title */}
-      <View style={{ flex: 1 }}>
 
-        <View>
-          <Text style={styles.currentDay}>My Tasks</Text>
-        </View>
-
-        {/* Task Lists Blocks */}
-        <ScrollView
-          contentContainerStyle={styles.taskListBlocks}
-          showsVerticalScrollIndicator={false}
-        >
-          {/* Task List(isCompleted = false) */}
-          <FlatList
-            data={tasks.filter((task) => !task.isCompleted)}
-            scrollEnabled={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.taskList}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => {
-              return (
-                <View style={styles.taskItem}>
-                  <View style={styles.taskItemLeft}>
-                    <TouchableOpacity onPress={() => handleTaskCompletion(item.id)}>
-                      <MaterialIcons name={item.isCompleted ? "check-box" : "check-box-outline-blank"} size={24} color="#555555" />
-                    </TouchableOpacity>
-                    <Text style={styles.taskItemTitle}>{item.title}</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => deleteTask(item.id)}>
-                    <MaterialIcons name="delete" size={24} color="#555555" />
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-            ListEmptyComponent={
-              <Text>No Tasks</Text>
-            }
-          />
-          {/* Task List(isCompleted = true) */}
-          {tasks.some(task => task.isCompleted) && (
-            <Text style={styles.textCompleted}>COMPLETED</Text>
-          )}
-          <FlatList
-            data={tasks.filter((task) => task.isCompleted)}
-            scrollEnabled={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.taskListIsCompleted}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => {
-              return (
-                <View style={[styles.taskItem, styles.completedTask]}>
-                  <View style={styles.taskItemLeft}>
-                    <TouchableOpacity onPress={() => handleTaskCompletion(item.id)}>
-                      <MaterialIcons name={item.isCompleted ? "check-box" : "check-box-outline-blank"} size={24} color="#555555" />
-                    </TouchableOpacity>
-                    <Text style={styles.taskItemTitle}>{item.title}</Text>
-                  </View>
-                  <TouchableOpacity onPress={() => deleteTask(item.id)}>
-                    <MaterialIcons name="delete" size={24} color="#555555" />
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-          />
-        </ScrollView>
-
-        {/* Bottom Action Write and Add Task */}
-        <View style={styles.addTask}>
-          <TextInput
-            value={inputValue}
-            onChangeText={(text) => {
-              setInputValue(text)
-              if (text.trim() !== "") {
-                setInputValueError(false);
-              }
-            }}
-            placeholder="Write a task..."
-            placeholderTextColor={"#222222"}
-            style={[
-              styles.addTaskInput,
-              inputValueError && styles.inputError
-            ]}
-          />
-          <TouchableOpacity
-            onPress={addTask}
-            style={styles.addTaskBtn}>
-            <Text style={styles.addTaskBtnText}>Add</Text>
-          </TouchableOpacity>
-        </View>
-
+      <View>
+        <Text style={styles.currentDay}>My Tasks</Text>
       </View>
+
+      {/* Task Lists Blocks */}
+      <ScrollView
+        contentContainerStyle={styles.taskListBlocks}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Task List(isCompleted = false) */}
+        <FlatList
+          data={tasks.filter((task) => !task.isCompleted)}
+          scrollEnabled={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.taskList}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return (
+              <View style={styles.taskItem}>
+                <View style={styles.taskItemLeft}>
+                  <TouchableOpacity onPress={() => handleTaskCompletion(item.id)}>
+                    <MaterialIcons name={item.isCompleted ? "check-box" : "check-box-outline-blank"} size={24} color="#555555" />
+                  </TouchableOpacity>
+                  <Text style={styles.taskItemTitle}>{item.title}</Text>
+                </View>
+                <TouchableOpacity onPress={() => deleteTask(item.id)}>
+                  <MaterialIcons name="delete" size={24} color="#555555" />
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+          ListEmptyComponent={
+            <Text>No Tasks</Text>
+          }
+        />
+        {/* Task List(isCompleted = true) */}
+        {tasks.some(task => task.isCompleted) && (
+          <Text style={styles.textCompleted}>COMPLETED</Text>
+        )}
+        <FlatList
+          data={tasks.filter((task) => task.isCompleted)}
+          scrollEnabled={false}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.taskListIsCompleted}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return (
+              <View style={[styles.taskItem, styles.completedTask]}>
+                <View style={styles.taskItemLeft}>
+                  <TouchableOpacity onPress={() => handleTaskCompletion(item.id)}>
+                    <MaterialIcons name={item.isCompleted ? "check-box" : "check-box-outline-blank"} size={24} color="#555555" />
+                  </TouchableOpacity>
+                  <Text style={styles.taskItemTitle}>{item.title}</Text>
+                </View>
+                <TouchableOpacity onPress={() => deleteTask(item.id)}>
+                  <MaterialIcons name="delete" size={24} color="#555555" />
+                </TouchableOpacity>
+              </View>
+            );
+          }}
+        />
+      </ScrollView>
+
+      {/* Bottom Action Write and Add Task */}
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={styles.addTask}>
+        <TextInput
+          value={inputValue}
+          onChangeText={(text) => {
+            setInputValue(text)
+            if (text.trim() !== "") {
+              setInputValueError(false);
+            }
+          }}
+          placeholder="Write a task..."
+          placeholderTextColor={"#222222"}
+          style={[
+            styles.addTaskInput,
+            inputValueError && styles.inputError
+          ]}
+        />
+        <TouchableOpacity
+          onPress={addTask}
+          style={styles.addTaskBtn}>
+          <Text style={styles.addTaskBtnText}>Add</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+
     </SafeAreaView >
   );
 }
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
   },
   taskListBlocks: {
     paddingTop: 32,
-    paddingBottom: 56 + 16,
+    paddingBottom: 16,
   },
   taskList: {
     gap: 16,
@@ -241,9 +241,6 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0, 0, 0, 0.1)"
   },
   addTask: {
-    position: "absolute",
-    left: 0,
-    bottom: 0,
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
