@@ -1,50 +1,46 @@
-# Welcome to your Expo app 👋
+# Добро пожаловать в Todo-приложение 📋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Это простое приложение **Todo**, созданное с помощью [Expo](https://expo.dev) и **React Native**, с поддержкой:
 
-## Get started
+* Локального хранения данных (AsyncStorage)
+* Добавления и удаления задач
+* Отметки задач как выполненных
+* Валидации поля ввода (не допускается пустой ввод)
 
-1. Install dependencies
+### 🎥 Демонстрация (GIF)
+
+![Демонстрация приложения](./assets/screens/demo.gif)
+
+## 🚀 Как начать
+
+1. Установите зависимости:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Запустите приложение:
 
    ```bash
-   npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+После запуска вы можете:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+* Открыть приложение в [Expo Go](https://expo.dev/go)
+* Запустить на Android-эмуляторе или iOS-симуляторе
+* Использовать [development build](https://docs.expo.dev/develop/development-builds/introduction/) для полного доступа к нативным возможностям
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🛠️ Возможности
 
-## Get a fresh project
+* 📦 **Хранение данных**
+  Все задачи сохраняются в локальном хранилище, чтобы при перезапуске приложения данные сохранялись.
 
-When you're ready, run:
+* ➕ **Добавление задач**
+  Введите текст и нажмите кнопку "Добавить", чтобы создать новую задачу. Пустые строки не допускаются (валидация).
 
-```bash
-npm run reset-project
-```
+* ✅ **Выполнение задач**
+  Можно отметить задачу как выполненную — она будет перечёркнута.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+* 🗑️ **Удаление задач**
+  Задачи можно удалять по одному клику.
