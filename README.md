@@ -9,7 +9,7 @@
 
 ### 🎥 Демонстрация (GIF)
 
-![Демонстрация приложения](./assets/screens/demo.gif)
+<img src="./assets/screens/demo.gif" alt="Главный экран" height="600"/>
 
 ## 🚀 Как начать
 
