@@ -1,5 +1,5 @@
-import { StyleSheet, KeyboardAvoidingView, TextInput, TouchableOpacity, Text } from "react-native";
-import { colors } from "../styles/colors";
+import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { colors } from "../constants/colors";
 
 export type AddTaskProps = {
     inputValue: string;

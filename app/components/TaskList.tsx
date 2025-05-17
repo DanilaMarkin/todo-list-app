@@ -1,7 +1,7 @@
-import { StyleSheet, FlatList, ScrollView, TouchableOpacity, View, Text } from "react-native";
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { colors } from "../constants/colors";
 import { Task } from "../types/task";
-import { colors } from "../styles/colors";
 
 type TaskListProps = {
     tasks: Task[];
