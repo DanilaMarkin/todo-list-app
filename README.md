@@ -1,4 +1,4 @@
-![Баннер](./assets/screens/social-preview.png)
+![Screenshot](./assets/screens/social-preview.png "Screenshot")
 
 # Добро пожаловать в Todo-приложение 📋
 
