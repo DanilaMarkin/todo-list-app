@@ -3,7 +3,7 @@ import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "
 import { colors } from "../constants/colors";
 import { Task } from "../types/task";
 
-type TaskListProps = {
+export type TaskListProps = {
     tasks: Task[];
     deleteTask: (id: string) => void;
     handleTaskCompletion: (id: string) => void;

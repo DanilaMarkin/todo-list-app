@@ -1,48 +1,67 @@
 ![Screenshot](./assets/screens/social-preview.png "Screenshot")
 
-# Добро пожаловать в Todo-приложение 📋
+# Welcome to the Todo App 📋
 
-Это простое приложение **Todo**, созданное с помощью [Expo](https://expo.dev) и **React Native**, с поддержкой:
+This is a simple **Todo** application built using [Expo](https://expo.dev) and **React Native**, featuring:
 
-* Локального хранения данных (AsyncStorage)
-* Добавления и удаления задач
-* Отметки задач как выполненных
-* Валидации поля ввода (не допускается пустой ввод)
+- Local data storage (AsyncStorage)
+- Adding and deleting tasks
+- Marking tasks as completed
+- Input field validation (empty input is not allowed)
 
-### 🎥 Демонстрация (GIF)
+### 🎥 Demo (GIF)
 
-<img src="./assets/screens/demo.gif" alt="Главный экран" height="600"/>
+<img src="./assets/screens/demo.gif" alt="Demo App" height="600"/>
 
-## 🚀 Как начать
+## 🚀 Getting Started
 
-1. Установите зависимости:
+1. Clone the repository:
 
-   ```bash
-   npm install
-   ```
+```bash
+git clone https://github.com/DanilaMarkin/todo-list-app.git
+```
 
-2. Запустите приложение:
+2. Navigate to the project directory:
 
-   ```bash
-   npm start
-   ```
+```bash
+cd todo-list-app
+```
 
-После запуска вы можете:
+3. Install dependencies:
 
-* Открыть приложение в [Expo Go](https://expo.dev/go)
-* Запустить на Android-эмуляторе или iOS-симуляторе
-* Использовать [development build](https://docs.expo.dev/develop/development-builds/introduction/) для полного доступа к нативным возможностям
+```bash
+npm install
+```
 
-## 🛠️ Возможности
+4. Start the app:
 
-* 📦 **Хранение данных**
-  Все задачи сохраняются в локальном хранилище, чтобы при перезапуске приложения данные сохранялись.
+```bash
+npm start
+```
 
-* ➕ **Добавление задач**
-  Введите текст и нажмите кнопку "Добавить", чтобы создать новую задачу. Пустые строки не допускаются (валидация).
+Once running, you can:
 
-* ✅ **Выполнение задач**
-  Можно отметить задачу как выполненную — она будет перечёркнута.
+- Open the app in [Expo Go](https://expo.dev/go)
+- Run it on an Android emulator or iOS simulator
+- Use a [development build](https://docs.expo.dev/develop/development-builds/introduction/) for full access to native features
 
-* 🗑️ **Удаление задач**
-  Задачи можно удалять по одному клику.
+## 🧩 Tech Stack
+
+- React
+- React Native
+- Expo (including expo-router)
+- TypeScript
+
+## 🛠️ Features
+
+- 📦 **Data Storage**
+  All tasks are saved in local storage to ensure data persistence even after restarting the app.
+
+- ➕ **Adding Tasks**
+  Enter text and press the "Add" button to create a new task. Empty input is not allowed (validation).
+
+- ✅ **Completing Tasks**
+  You can mark a task as completed — it will be crossed out.
+
+- 🗑️ **Deleting Tasks**
+  Tasks can be deleted with a single click.
